@@ -7,7 +7,7 @@ package Login;
 
 /**
  *
- * @author RolaQ
+ * @author PSantana
  */
 public class Logeo extends javax.swing.JFrame {
 
