@@ -22,7 +22,7 @@ public class ConexionDb {
         try {
             String drv="com.microsoft.sqlserver.jdbc.SQLServerDriver";
             String cnx="jdbc:sqlserver://MCINTHEHOUSE\\MCINTHEHOUSE;databasename=CHICKENSQUAD;" +
-                                                "user=sa;password=123456" ;
+                                                 "user=sa;password=123456" ;
             Class.forName( drv ) ;
             cn  = DriverManager.getConnection( cnx  ) ;
         } catch (ClassNotFoundException ex) {
