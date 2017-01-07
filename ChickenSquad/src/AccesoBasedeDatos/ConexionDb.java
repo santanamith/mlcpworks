@@ -7,9 +7,12 @@ package AccesoBasedeDatos;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,14 +36,26 @@ public class ConexionDb {
                 return  cn ;
     }
     public  ResultSet  EjecutarRS( String sql ) {
-                ResultSet rs = null ;
-                try {
-                        Statement  st = cn.createStatement() ;
-                        rs  = st.executeQuery ( sql ) ;
-                } catch ( SQLException  e ) {
-                       JOptionPane.showMessageDialog( null, 
-                            "Error al ejecutarRS\n" +   e.getMessage() );
-                } // try-catch
+                ResultSet rs = null ;     
+                Statement  st ;
+        try {
+            st = cn.createStatement();
+            rs  = st.executeQuery ( sql ) ;
+        } catch (SQLException ex) {
+            System.out.println("Error en el ejecutar rs");
+        } 
                 return rs ;    
         } 
+    public void editIGV(int id,int monto) {
+        try {   
+            PreparedStatement pst = cn.prepareStatement("UPDATE IGV SET monto=?"+" WHERE id_impuesto=?");
+            pst.setInt(1, monto);
+            pst.setInt(2, id);
+            int ex=pst.executeUpdate();
+            if(ex>0)
+                JOptionPane.showMessageDialog(null, "Editado Correctamente");
+        } catch (SQLException ex) {
+            System.out.println("Error al editar igv");
+        }
+    }
 }
