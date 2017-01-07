@@ -247,7 +247,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnGuardar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Guardar"/>
+                <Property name="text" type="java.lang.String" value="ssssss"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnCancelar">

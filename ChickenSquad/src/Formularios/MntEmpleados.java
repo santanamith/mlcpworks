@@ -97,7 +97,7 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
 
         btnEditar.setText("Editar");
 
-        btnGuardar.setText("Guardar");
+        btnGuardar.setText("ssssss");
 
         btnCancelar.setText("Cancelar");
 
