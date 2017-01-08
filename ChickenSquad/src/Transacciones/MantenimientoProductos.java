@@ -4,6 +4,11 @@ import AccesoBasedeDatos.ConexionDb;
 import AccesoBasedeDatos.ConexionDb2;
 import ClasesGenericas.Producto;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -79,25 +84,22 @@ public class MantenimientoProductos {
         //Asi es mas o menos
     }
 
-    public void listarProduc(Producto producto) {
+    public void setTable(DefaultTableModel tabla) {
+        int f=0;
+        ResultSet rs=cn.EjecutarRS("select * from producto");
+        tabla.setRowCount(0);
         try {
-            PreparedStatement pst = cn.ConexionDB().prepareStatement("select * from productos");
-            pst.setString(1, producto.getIdproducto());
-            pst.setString(2, producto.getNombreproducto());
-            pst.setString(3, producto.getDescripcionproducto());
-            pst.setDouble(4, producto.getPrecio());
-            pst.setInt(5, producto.getStock());
-
-            int exinsert = pst.executeUpdate();
-            if (exinsert > 0) {
-                System.out.println("listado muchachon");
+            while (rs.next()){
+                f=tabla.getRowCount();
+                tabla.setRowCount(f+1);
+                tabla.setValueAt(rs.getString("idproducto"), f, 0);
+                tabla.setValueAt(rs.getString("nombreproducto"), f, 1);
+                tabla.setValueAt(rs.getString("descripcionproducto"), f, 2);
+                tabla.setValueAt(rs.getDouble("precio"), f, 3);
+                tabla.setValueAt(rs.getInt("stock"), f, 4);
             }
-
-            System.out.println("");
-
-        } catch (Exception e) {
-            System.out.println("error editarProduc" + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al Estableces datos de la tabla Productos "+ex.getMessage());
         }
     }
-
 }

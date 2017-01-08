@@ -22,6 +22,7 @@ public class MntProducto extends javax.swing.JInternalFrame {
         isActiveElements(false);
         isActiveButton(false, false);
         jTable1.setModel(dtm);
+        mntproducto.setTable(dtm);
         listar();        
     }
 
@@ -35,7 +36,7 @@ public class MntProducto extends javax.swing.JInternalFrame {
     }
     private void listar(){
         Producto producto = new Producto();
-        mntproducto.listarProduc(producto);
+        //mntproducto.listarProduc(producto);
     }
 
     private void isActiveButton(boolean isOn,boolean cancel) {

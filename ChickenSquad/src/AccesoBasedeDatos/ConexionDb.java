@@ -40,11 +40,19 @@ public class ConexionDb {
                 ResultSet rs = null ;     
                 Statement  st ;
         try {
+            ConexionDB();
             st = cn.createStatement();
             rs  = st.executeQuery ( sql ) ;
         } catch (SQLException ex) {
             System.out.println("Error en el ejecutar rs");
+        }finally{
+                    try {
+                        ConexionDB().close();
+                    } catch (SQLException ex) {
+                        System.out.println("Error al cerrar");
+                    }
         } 
+        
                 return rs ;    
         } 
     public void editIGV(int id,int monto) {
