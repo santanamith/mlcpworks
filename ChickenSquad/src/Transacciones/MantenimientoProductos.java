@@ -1,5 +1,7 @@
-package AccesoBasedeDatos;
+package Transacciones;
 
+import AccesoBasedeDatos.ConexionDb;
+import AccesoBasedeDatos.ConexionDb2;
 import ClasesGenericas.Producto;
 import java.sql.PreparedStatement;
 
@@ -9,17 +11,18 @@ import java.sql.PreparedStatement;
  */
 public class MantenimientoProductos {
 
-    ConexionDb2 cn;
+    ConexionDb cn;
 
     public MantenimientoProductos() {
-        cn = new ConexionDb2();
+        cn = new ConexionDb();
+        
     }
 
     //perci no te falta listar los campos qu vas utilizzar?? no el defaultablemodel no lo estoy usando asi que no sirve
     //sera p
     public void insertproduc(Producto producto) {
         try {
-            PreparedStatement pst = cn.ConexionDB().prepareStatement("insert into productos values(?,?,?,?,?)");
+            PreparedStatement pst = cn.ConexionDB().prepareStatement("insert into producto values(?,?,?,?,?)");
             pst.setString(1, producto.getIdproducto());
             pst.setString(2, producto.getNombreproducto());
             pst.setString(3, producto.getDescripcionproducto());
@@ -39,7 +42,7 @@ public class MantenimientoProductos {
 
     public void editarProduc(Producto producto) {
         try {
-            PreparedStatement pst = cn.ConexionDB().prepareStatement("UpDATE  productos set idproducto=?,nombrepro=?,descripcionprod=?,precio=?,stock=? "
+            PreparedStatement pst = cn.ConexionDB().prepareStatement("UpDATE  producto set nombrepro=?,descripcionprod=?,precio=?,stock=? "
                     + "where idproducto=?");
             pst.setString(1, producto.getIdproducto());
             pst.setString(2, producto.getNombreproducto());
@@ -48,6 +51,7 @@ public class MantenimientoProductos {
             pst.setInt(5, producto.getStock());
 
             int exinsert = pst.executeUpdate();
+            pst.close();
             if (exinsert > 0) {
                 System.out.println("editado muchachon");
             }

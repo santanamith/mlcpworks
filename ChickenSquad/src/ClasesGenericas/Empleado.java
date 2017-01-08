@@ -5,6 +5,7 @@
  */
 package ClasesGenericas;
 
+
 /**
  *
  * @author PSantana
@@ -21,6 +22,17 @@ public class Empleado {
     private String usuario;
 
     public Empleado() {
+    }
+
+    public Empleado(int id_empleado, String nombre, String ape_pat, String ape_mat, String dni, String id_distrito, String direccion, String fechaing) {
+        this.id_empleado = id_empleado;
+        this.nombre = nombre;
+        this.ape_pat = ape_pat;
+        this.ape_mat = ape_mat;
+        this.dni = dni;
+        this.id_distrito = id_distrito;
+        this.direccion = direccion;
+        this.fechaing = fechaing;
     }
 
     public Empleado(int id_empleado, String nombre, String ape_pat, String ape_mat, String dni, String id_distrito, String direccion, String fechaing, String usuario) {

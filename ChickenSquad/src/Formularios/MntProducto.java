@@ -1,6 +1,6 @@
 package Formularios;
 
-import AccesoBasedeDatos.MantenimientoProductos;
+import Transacciones.MantenimientoProductos;
 import ClasesGenericas.Producto;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -9,33 +9,24 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Cibert_Poet
  */
-public class frm_producto extends javax.swing.JInternalFrame {
+public class MntProducto extends javax.swing.JInternalFrame {
 
     private int opcion = 0;//Registro=1,Editar = 2
     String[] titulo = new String[]{"id", "nombre", "descripcion", "precio", "cantidad"};
-     DefaultTableModel dtm = new DefaultTableModel(titulo,0);
+    DefaultTableModel dtm = new DefaultTableModel(titulo,0);
     MantenimientoProductos mntproducto;
 
-    public frm_producto() {
+    public MntProducto() {
         initComponents();
         mntproducto = new MantenimientoProductos();
+        isActiveElements(false);
+        isActiveButton(false, false);
         jTable1.setModel(dtm);
-        listar();
-        bloquear(true);
+        listar();        
     }
 
-    public void bloquear(boolean valor) {
-        btnNuevo.setEnabled(true);
-        btnEditar.setEnabled(true);
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        btnEliminar.setEnabled(false);
 
-
-
-    }
-
-    private void limpiar() {
+    private void clean() {
         txtIDproducto.setText("");
         txtNombre.setText("");
         txtDescripcion.setText("");
@@ -47,6 +38,25 @@ public class frm_producto extends javax.swing.JInternalFrame {
         mntproducto.listarProduc(producto);
     }
 
+    private void isActiveButton(boolean isOn,boolean cancel) {
+        if(cancel){
+            btnEditar.setEnabled(true);
+            btnNuevo.setEnabled(true);
+            btnGuardar.setEnabled(true);
+        }else{
+            btnGuardar.setEnabled(isOn);
+            btnNuevo.setEnabled(!isOn);
+            btnEditar.setEnabled(!isOn);             
+        }
+    }
+    private void isActiveElements(boolean isActive) {
+        txtIDproducto.setEditable(isActive);
+        txtNombre.setEditable(isActive);
+        txtDescripcion.setEditable(isActive);
+        txtPrecio.setEditable(isActive);
+        txtStock.setEditable(isActive);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,7 +66,7 @@ public class frm_producto extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tbdProducto = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -75,6 +85,8 @@ public class frm_producto extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
+
+        setClosable(true);
 
         jLabel1.setText("nombre");
 
@@ -158,19 +170,15 @@ public class frm_producto extends javax.swing.JInternalFrame {
                             .addComponent(txtIDproducto, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                             .addComponent(txtNombre)
                             .addComponent(txtDescripcion))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                                .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(52, 52, 52))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,61 +214,62 @@ public class frm_producto extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(btnEditar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar)
                 .addGap(227, 227, 227))
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        tbdProducto.addTab("tab1", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tbdProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tbdProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        opcion = 1;
-        bloquear(true);
-        limpiar();
+        opcion=1;//Registrar
+        isActiveButton(true, false);
+        isActiveElements(true);
+        clean();        
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        Producto producto = new Producto();
-        opcion = 2;
-        if (btnEditar.isSelected()){
-            String id =JOptionPane.showInputDialog(this,"ingreso el id");
-         
-            mntproducto.editarProduc(producto);
-           
-      
-        }
+        isActiveButton(true, false);
+        isActiveElements(true);
+        opcion=2;//Edita Registro
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         Producto producto = new Producto(txtIDproducto.getText(),
                 txtNombre.getText(), txtDescripcion.getText(),
                 Double.parseDouble(txtPrecio.getText()), Integer.parseInt(txtStock.getText()));
-        //if(opcion==1){
-        mntproducto.insertproduc(producto);
-        //}
+        if(opcion==1){
+            mntproducto.insertproduc(producto);
+            isActiveElements(false);
+            isActiveButton(false, false); 
+        }
+        if(opcion==2){
+            
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        opcion = 0;
-        this.dispose();
+        isActiveButton(false, false);
+        isActiveElements(false);
+        opcion=0;//No hace nada
     }//GEN-LAST:event_btnCancelarActionPerformed
 
 
@@ -277,8 +286,8 @@ public class frm_producto extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    public javax.swing.JTabbedPane tbdProducto;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtIDproducto;
     private javax.swing.JTextField txtNombre;

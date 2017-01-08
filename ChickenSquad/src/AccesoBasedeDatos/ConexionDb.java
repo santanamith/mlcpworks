@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,12 +59,19 @@ public class ConexionDb {
             System.out.println("Error al editar igv");
         }
     }
-
-    PreparedStatement PreparedStatement() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    PreparedStatement PreparedStatement(String insert_into_productos_values) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public void getDistrito(JComboBox cmb) {
+              
+        cmb.removeAllItems();
+        cmb.addItem("(Distrito)");
+        try {
+            ResultSet rs=EjecutarRS("select * from distrito");
+            while (rs.next()){
+                cmb.addItem(rs.getString("distrito")+" "+rs.getString("ID_DISTRITO"));     
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener los distritos   "+e.getMessage());
+        } 
     }
 }

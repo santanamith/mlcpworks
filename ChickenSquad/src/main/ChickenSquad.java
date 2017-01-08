@@ -5,7 +5,7 @@
  */
 package main;
 
-import Formularios.frm_producto;
+import Formularios.MntProducto;
 
 /**
  *
@@ -14,7 +14,7 @@ import Formularios.frm_producto;
 public class ChickenSquad {
     public static void main(String[] args) {
        // new Login.Logeo().setVisible(true);
-       // frm_producto frm= new frm_producto();
-        new Formularios.frm_producto().setVisible(true);
+       // MntProducto frm= new MntProducto();
+        new Formularios.MntProducto().setVisible(true);
     }
 }
