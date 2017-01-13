@@ -27,12 +27,12 @@ public class ConfigIGV extends javax.swing.JDialog {
         cn.ConexionDB();
         setButtonsV(true);       
         txtID.setVisible(false);
-        ResultSet rs;
-        rs = cn.EjecutarRS("SELECT * FROM IGV");
-        getIGV(rs);   
+        getIGV();   
     }
-    private void getIGV(ResultSet rs){
+    private void getIGV(){
         try {
+            ResultSet rs;
+            rs = cn.EjecutarRS("SELECT * FROM IGV");
             if(rs.next()){
             txtID.setText(""+rs.getInt("id_impuesto"));
             txtIGV.setText(""+rs.getInt("monto"));
@@ -158,19 +158,18 @@ public class ConfigIGV extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        ResultSet rs;
-        rs = cn.EjecutarRS("SELECT * FROM IGV");
-        getIGV(rs);
+        getIGV();
         setButtonsV(true);
            
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         int igv=Integer.parseInt(txtIGV.getText().trim());
-        int id=Integer.parseInt(txtID.getText());
+        int id=Integer.parseInt(txtID.getText().trim());
         if(Integer.parseInt(txtIGV.getText().trim())>=0 && Integer.parseInt(txtIGV.getText().trim())<=100){
-            cn.editIGV(id, igv);
+            cn.editIGV(igv, id);
             setButtonsV(true);
+            getIGV();
         }else{
             JOptionPane.showMessageDialog(this, "Ingrese valores de 1 al 100");
         }

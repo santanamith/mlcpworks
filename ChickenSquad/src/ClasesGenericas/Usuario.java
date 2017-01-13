@@ -11,17 +11,20 @@ package ClasesGenericas;
  */
 public class Usuario {
     private String usuario ;
+    private int id_empleado ;
     private String clave ;
     private String cargo ;
 
     public Usuario() {
     }
 
-    public Usuario(String usuario, String clave, String cargo) {
+    public Usuario(String usuario,int id_empleado, String clave, String cargo) {
         this.usuario = usuario;
+        this.id_empleado = id_empleado;
         this.clave = clave;
         this.cargo = cargo;
     }
+    
     
     public String getUsuario() {
         return usuario;
@@ -45,6 +48,14 @@ public class Usuario {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public int getId_empleado() {
+        return id_empleado;
+    }
+
+    public void setId_empleado(int id_empleado) {
+        this.id_empleado = id_empleado;
     }
     
 }

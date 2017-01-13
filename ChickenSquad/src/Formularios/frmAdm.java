@@ -13,14 +13,14 @@ package Formularios;
  */
 public class frmAdm extends javax.swing.JFrame {
     Formularios.MntEmpleados empl=new MntEmpleados();
-    Formularios.MntProducto prod=new Formularios.MntProducto();
+    Formularios.MntProducto producto=new Formularios.MntProducto();  
     public frmAdm() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         jPanel1.add(empl);
         empl.show();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -116,8 +116,8 @@ public class frmAdm extends javax.swing.JFrame {
                 empl.tbdpManteE.setSelectedIndex(0);
                 
         }else{
-            if(prod.isShowing()){
-                    prod.dispose();
+            if(producto.isShowing()){
+                    producto.dispose();
                 }
             jPanel1.add(empl);
             empl.show();
@@ -127,15 +127,15 @@ public class frmAdm extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         
-        if(prod.isShowing()){
-                prod.tbdProducto.setSelectedIndex(0);
+        if(producto.isShowing()){
+                producto.tbdProducto.setSelectedIndex(0);
         }else{
             if(empl.isShowing()){
                     empl.dispose();
                 }
-            jPanel1.add(prod);
-            prod.show();
-            prod.tbdProducto.setSelectedIndex(0);
+            jPanel1.add(producto);
+            producto.show();
+            producto.tbdProducto.setSelectedIndex(0);
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -145,9 +145,12 @@ public class frmAdm extends javax.swing.JFrame {
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
-           
-                    javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueIceLookAndFeel");
-            
+           for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(frmAdm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {

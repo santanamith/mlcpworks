@@ -7,12 +7,13 @@
 package Login;
 
 import AccesoBasedeDatos.ConexionDb;
+import Controlador.ContraMntCyBuscarPro;
+import Formularios.BuscarCliente;
+import Formularios.BuscarProducto;
+import Formularios.MntComprobante;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,17 +21,27 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Logeo extends javax.swing.JFrame {
     ConexionDb cn=new ConexionDb();
-    String user="",pass="";
+    private String user="";
+    private String pass="";
     //DefaultTableModel  tab = new DefaultTableModel(tit,0);
     /**
      * Creates new form Logeo
      */
     public Logeo() {
         initComponents();
+        this.setLocationRelativeTo(this);
         cn.ConexionDB();
         this.setResizable(false);
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -162,7 +173,17 @@ public class Logeo extends javax.swing.JFrame {
                 cargo=getCargo(rs);
             switch(cargo){
                 case "ADMINISTRADOR":new Formularios.frmAdm().setVisible(true);
-                        this.dispose();break;
+                        setUser(user);
+                        this.dispose();
+                        break;
+                case "cajero":
+                    MntComprobante mnt= new MntComprobante(user);
+                    ContraMntCyBuscarPro m;
+                    m=new ContraMntCyBuscarPro(mnt, new BuscarProducto(mnt, true),new BuscarCliente(mnt, true));
+                    mnt.setVisible(true);
+                        setUser(user);
+                        this.dispose();
+                        break;
             }
         }else{
             user="";pass="";
@@ -182,9 +203,12 @@ public class Logeo extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-           
-                    javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueIceLookAndFeel");
-            
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Logeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {

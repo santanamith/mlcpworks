@@ -55,16 +55,22 @@ public class ConexionDb {
         
                 return rs ;    
         } 
-    public void editIGV(int id,int monto) {
+    public void editIGV(int igv,int id) {
         try {   
-            PreparedStatement pst = cn.prepareStatement("UPDATE IGV SET monto=?"+" WHERE id_impuesto=?");
-            pst.setInt(1, monto);
+            String sql="UPDATE IGV SET monto=? WHERE id_impuesto=?;";
+            //String sql="UPDATE IGV SET monto=? "+ "WHERE id_impuesto=?";
+            ConexionDB();
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, igv);
             pst.setInt(2, id);
             int ex=pst.executeUpdate();
-            if(ex>0)
+            if(ex>0){
                 JOptionPane.showMessageDialog(null, "Editado Correctamente");
+                pst.close();
+                ConexionDB().close();
+            }    
         } catch (SQLException ex) {
-            System.out.println("Error al editar igv");
+            System.out.println("Error al editar igv" + ex.getMessage());
         }
     }
     

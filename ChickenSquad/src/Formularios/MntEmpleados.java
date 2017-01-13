@@ -8,6 +8,8 @@ package Formularios;
 
 import AccesoBasedeDatos.ConexionDb;
 import ClasesGenericas.Empleado;
+import ClasesGenericas.Usuario;
+import Transacciones.MantenimientoUsuarios;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -15,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,18 +26,33 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MntEmpleados extends javax.swing.JInternalFrame {
     private int opcion=0; // 1 = Registrar 2=Actualzar
-    private DefaultTableModel tblemp = new DefaultTableModel(setTitle(), 0); 
+    private DefaultTableModel tblemp = new DefaultTableModel(setTitleE(), 0); 
+    private DefaultTableModel tblusu = new DefaultTableModel(setTitleU(), 0); 
+    private MantenimientoUsuarios user = new MantenimientoUsuarios();
     private Transacciones.MantenimientoEmpleado mntempleado = new Transacciones.MantenimientoEmpleado();
     private ConexionDb cn=new ConexionDb();
     public MntEmpleados() {
         initComponents();
         cn.ConexionDB();
+        jTable1.setModel(tblemp);
+        tblUsuarios.setModel(tblusu);
         cn.getDistrito(cmbDistrito);
+        user.setTable(tblusu);
+        user.setidEmpl(cmbEmpleado);
+        mntempleado.setTable(tblemp);
         isActiveElements(false);
-        isActiveButton(false, false);
+        isActiveButton(false, false);        
+        setCmbCargo();
+        isActiveElementsU(false);
+        isActiveButtonU(false, false);
+        
     }
-    private String[] setTitle() {
-        String []titulo = {""};
+    private String[] setTitleU() {
+        String []titulo = {"Usuario","Empleado","Clave","Cargo"};
+        return titulo;
+    }
+    private String[] setTitleE() {
+        String []titulo = {"ID","Nombre","Apellido P.","Apellido M.","DNI","Distrito","Direccion","Usuario","Fecha I."};
         return titulo;
     }
     private void isActiveButton(boolean isOn,boolean cancel) {
@@ -46,6 +64,17 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
             btnGuardar.setEnabled(isOn);
             btnNuevo.setEnabled(!isOn);
             btnEditar.setEnabled(!isOn);             
+        }
+    }
+    private void isActiveButtonU(boolean isOn,boolean cancel) {
+        if(cancel){
+            //btnEdit.setEnabled(true);
+            btnNew.setEnabled(true);
+            btnSave.setEnabled(true);
+        }else{
+            btnSave.setEnabled(isOn);
+            btnNew.setEnabled(!isOn);
+            //btnEdit.setEnabled(!isOn);             
         }
     }
    
@@ -63,6 +92,10 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
         txtDireccion.setEditable(isActive);
         txtFecha.setEditable(isActive);
     }
+    private void isActiveElementsU(boolean isActive) {
+    txtUsuario.setEditable(isActive);
+    txtClave.setEditable(isActive); 
+    }
     private Empleado getEmpleado() {
         
         String fecha=txtFecha.getText().toString().trim();
@@ -79,6 +112,17 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
         return empleado;
     }
     
+    private Usuario getUsuario() {
+        String pass="";
+        for(char u:txtClave.getPassword()){
+            pass+=""+u;
+        }
+        System.out.println(pass);
+        Usuario usuario=new Usuario(txtUsuario.getText(),
+                Integer.parseInt(getIdempleado(cmbEmpleado.getSelectedItem().toString())),
+                pass,cmbCargo.getSelectedItem().toString());
+        return usuario;
+    }
     private void clean() {
         txtIDEmp.setText("");
         txtNombre.setText("");
@@ -87,6 +131,30 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
         txtDni.setText("");
         txtDireccion.setText("");
         txtFecha.setText("");
+    }
+    private void cleanU(){
+        txtUsuario.setText("");
+        txtClave.setText("");
+    }
+    private void setCmbCargo(){
+        cmbCargo.removeAllItems();
+        cmbCargo.addItem("(Cargos)");
+        cmbCargo.addItem("ADMINISTRADOR");
+        cmbCargo.addItem("CAJERO");
+    }
+    private String getIdempleado(String file){
+        int pos=0;
+        String title="";
+        char [] c=file.toCharArray();
+        for (int i = c.length-1; i >= 0; i--) {
+            title=""+c[i];
+            if(title.equals(",")){
+                pos=i;  
+                break;
+            }
+        }
+        title=file.substring(pos+1,file.length());
+        return title;
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -116,9 +184,31 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         cmbDistrito = new javax.swing.JComboBox();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblUsuarios = new javax.swing.JTable();
+        cmbCargo = new javax.swing.JComboBox();
+        cmbEmpleado = new javax.swing.JComboBox();
+        txtUsuario = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtClave = new javax.swing.JPasswordField();
+        btnNew = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Mantenimiento de Personal");
+
+        tbdpManteE.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tbdpManteEStateChanged(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -261,19 +351,143 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtApeP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(txtApeM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar))
-                .addGap(61, 61, 61)
+                    .addComponent(txtApeM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         tbdpManteE.addTab("Empleados", jPanel1);
+
+        tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblUsuarios);
+
+        cmbCargo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cmbEmpleado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel9.setText("Usuario");
+
+        jLabel10.setText("Clave");
+
+        jLabel11.setText("Referencia al empleado");
+
+        jLabel12.setText("Cargo");
+
+        btnNew.setText("Nuevo");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
+        btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(85, 85, 85)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmbCargo, 0, 186, Short.MAX_VALUE)
+                    .addComponent(cmbEmpleado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtUsuario)
+                    .addComponent(txtClave))
+                .addGap(137, 137, 137)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(btnNew))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSave))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(btnEliminar))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(btnCancel))
+                .addGap(56, 56, 56)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        tbdpManteE.addTab("Usuario", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -294,6 +508,7 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
         isActiveElements(true);
         clean();
         opcion=1;//Registrar
+        txtIDEmp.grabFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -303,9 +518,14 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        isActiveButton(true, false);
-        isActiveElements(true);
+        isActiveButton(true, false);        
+        isActiveElements(true);        
         opcion=2;//Edita Registro
+        String dni=JOptionPane.showInputDialog("Ingrese el DNI del empleado");
+        txtIDEmp.setEditable(false);txtDni.setEditable(false);
+        mntempleado.buscarXdni(dni, txtIDEmp, txtNombre, txtApeP, txtApeM, txtDni, txtDireccion, txtFecha);
+        txtDni.setEditable(true);
+        txtDni.setText("");
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -314,17 +534,76 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
             System.out.println(txtFecha.getValue());
             isActiveElements(false);
             isActiveButton(false, false); 
+            mntempleado.setTable(tblemp);
+            opcion=0;
+        }
+        if(opcion==2){
+           mntempleado.updateEmpleado(getEmpleado());
+           isActiveElements(false);
+           isActiveButton(false, false); 
+           mntempleado.setTable(tblemp);
+           opcion=0; 
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void tbdpManteEStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbdpManteEStateChanged
+        if(tbdpManteE.getSelectedIndex()==0){
+            opcion=0;
+        }
+        if(tbdpManteE.getSelectedIndex()==1){
+            opcion=0;
+        }
+    }//GEN-LAST:event_tbdpManteEStateChanged
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        isActiveButtonU(true, false);
+        isActiveElementsU(true);
+        cleanU();
+        opcion=1;//Registrar
+        txtUsuario.grabFocus();
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if(opcion==1){
+            user.insertUser(getUsuario());
+            isActiveElements(false);
+            isActiveButton(false, false); 
+            user.setTable(tblusu);
+        }
+        if(opcion==2){
+            
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        isActiveButton(false, false);
+        isActiveElements(false);
+        opcion=0;//No hace nada
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        String usuario=JOptionPane.showInputDialog("Ingrese el usuario a eliminar");
+        user.deleteUser(usuario);
+        user.setTable(tblusu);
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnNew;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox cmbCargo;
     private javax.swing.JComboBox cmbDistrito;
+    private javax.swing.JComboBox cmbEmpleado;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -332,16 +611,23 @@ public class MntEmpleados extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     public javax.swing.JTabbedPane tbdpManteE;
+    private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtApeM;
     private javax.swing.JTextField txtApeP;
+    private javax.swing.JPasswordField txtClave;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDni;
     private javax.swing.JFormattedTextField txtFecha;
     private javax.swing.JTextField txtIDEmp;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

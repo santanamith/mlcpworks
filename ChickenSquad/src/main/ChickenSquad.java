@@ -13,8 +13,7 @@ import Formularios.MntProducto;
  */
 public class ChickenSquad {
     public static void main(String[] args) {
-       // new Login.Logeo().setVisible(true);
-       // MntProducto frm= new MntProducto();
-        new Formularios.MntProducto().setVisible(true);
+       new Login.Logeo().setVisible(true);
+       
     }
 }
