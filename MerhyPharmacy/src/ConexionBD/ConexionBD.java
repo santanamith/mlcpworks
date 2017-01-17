@@ -10,6 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -21,11 +24,22 @@ public class ConexionBD {
     private ResultSet rst;
 
 
-    public ConexionBD() throws ClassNotFoundException,SQLException,InstantiationException,IllegalAccessException{
+    public ConexionBD() {
         //cargar el controlador jdbc
         String controlador="com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        Class.forName(controlador).newInstance();
-        conectar(); //conectar con la fuente de datos
+        try {
+            Class.forName(controlador).newInstance();
+            conectar();
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Error "+ex.getMessage());
+        } catch (InstantiationException ex) {
+            System.out.println("Error "+ex.getMessage());
+        } catch (IllegalAccessException ex) {
+            System.out.println("Error "+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error "+ex.getMessage());
+        }
+         //conectar con la fuente de datos
     }
 
     public void conectar() throws SQLException{
@@ -58,4 +72,16 @@ public class ConexionBD {
         
        return rst;
     }
+     
+    public void setTipo(JComboBox cmbTipo){
+        try {
+            cmbTipo.removeAllItems();
+            ResultSet rs=Consulta("select * from tipo");
+            while(rs.next()){                
+                cmbTipo.addItem(rs.getInt("idtipo")+" "+rs.getString("nombres"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al llenar combobox "+ex.getMessage());
+        }
+    } 
 }
