@@ -6,7 +6,6 @@
 package Vistas.Paneles;
 
 import ConexionBD.ConexionBD;
-import ConexionBD.ConexionBDMelanio;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.sql.ResultSet;

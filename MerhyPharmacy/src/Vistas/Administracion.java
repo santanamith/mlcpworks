@@ -12,6 +12,7 @@ import Vistas.Paneles.DeleteUser;
 import Vistas.Paneles.EditProduct;
 import Vistas.Paneles.EditRUC;
 import Vistas.Paneles.EditUser;
+import Vistas.Paneles.VentasHechas;
 
 /**
  *
@@ -28,8 +29,9 @@ public class Administracion extends javax.swing.JFrame {
         jTabbedPane2.addTab("Edit Usuario", new EditUser());
         jTabbedPane2.addTab("Delete Usuario", new DeleteUser());
         jTabbedPane2.addTab("Edit RUC", new EditRUC());
+        jTabbedPane2.addTab("Reporte de venta", new VentasHechas());
     }
-    
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

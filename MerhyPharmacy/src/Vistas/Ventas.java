@@ -15,11 +15,12 @@ import Vistas.Paneles.frm_factura;
  */
 public class Ventas extends javax.swing.JFrame {
 
-    
-    public Ventas() {
+    private String user;
+    public Ventas(String user) {
         initComponents();
+        this.user=user;
         this.setExtendedState(MAXIMIZED_BOTH);
-        jTabbedPane1.addTab("Registro de venta", new frm_factura());
+        jTabbedPane1.addTab("Registro de venta", new frm_factura(user));
     }
 
     /**
@@ -79,7 +80,7 @@ public class Ventas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Ventas().setVisible(true);
+                //new Ventas().setVisible(true);
             }
         });
     }

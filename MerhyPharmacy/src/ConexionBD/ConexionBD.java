@@ -44,9 +44,9 @@ public class ConexionBD {
 
     public void conectar() throws SQLException{
         //datos necesarios para la conexion
-    String URL_bd="jdbc:sqlserver://mcinthehouse\\mcinthehouse;databaseName=PHARMACY_MERHY";
+    String URL_bd="jdbc:sqlserver://.;databaseName=PHARMACY_MERHY";
     String usuario="sa";
-    String contraseña="123456";
+    String contraseña="123";
     //conexion con la bd
     con=DriverManager.getConnection(URL_bd,usuario,contraseña);
     // se crea una Statement para asi poder usar sentencias sql
